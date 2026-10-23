@@ -63,6 +63,7 @@ public class Projet {
             Article b = new Article();
             b.nom = a.nom;
             b.qte = a.qte;
+            b.unite = a.unite;
             b.prix = a.prix;
             b.approx = a.approx;
             b.pris = false;

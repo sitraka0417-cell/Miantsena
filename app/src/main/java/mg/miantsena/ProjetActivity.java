@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ProjetActivity extends AppCompatActivity implements ArticleAdapter.Ecouteur {
+
+    private static final String[] UNITES = {"pce", "kg", "g", "L", "mL", "m", "paquet", "boîte", "sachet", "bouteille"};
 
     private Projet projet;
     private boolean edition, nouveau;
@@ -213,6 +216,8 @@ public class ProjetActivity extends AppCompatActivity implements ArticleAdapter.
         final EditText qte = v.findViewById(R.id.d_qte);
         final EditText prix = v.findViewById(R.id.d_prix);
         final CheckBox approx = v.findViewById(R.id.d_approx);
+        final Spinner unite = v.findViewById(R.id.d_unite);
+        unite.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, UNITES));
 
         // Suggestions : articles déjà utilisés + dernier prix connu
         final Map<String, Article> connus = new LinkedHashMap<>();
@@ -231,12 +236,15 @@ public class ProjetActivity extends AppCompatActivity implements ArticleAdapter.
             if (k != null && prix.getText().toString().trim().isEmpty() && k.aPrix()) {
                 prix.setText(formaterPrix(k.prix));
                 approx.setChecked(k.approx);
+                int ui = java.util.Arrays.asList(UNITES).indexOf(k.unite);
+                unite.setSelection(Math.max(ui, 0));
             }
         });
 
         if (existant != null) {
             nom.setText(existant.nom);
-            qte.setText(String.valueOf(existant.qte));
+            qte.setText(Utils.qte(existant.qte));
+            unite.setSelection(Math.max(java.util.Arrays.asList(UNITES).indexOf(existant.unite), 0));
             if (existant.aPrix()) prix.setText(formaterPrix(existant.prix));
             approx.setChecked(existant.approx);
         } else {
@@ -253,13 +261,14 @@ public class ProjetActivity extends AppCompatActivity implements ArticleAdapter.
 
         d.setOnShowListener(x -> {
             d.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(bt -> {
-                if (enregistrerArticle(existant, nom, qte, prix, approx)) d.dismiss();
+                if (enregistrerArticle(existant, nom, qte, unite, prix, approx)) d.dismiss();
             });
             if (existant == null) {
                 d.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(bt -> {
-                    if (enregistrerArticle(null, nom, qte, prix, approx)) {
+                    if (enregistrerArticle(null, nom, qte, unite, prix, approx)) {
                         nom.setText("");
                         qte.setText("1");
+                        unite.setSelection(0);
                         prix.setText("");
                         approx.setChecked(false);
                         nom.requestFocus();
@@ -271,16 +280,25 @@ public class ProjetActivity extends AppCompatActivity implements ArticleAdapter.
         nom.requestFocus();
     }
 
-    private boolean enregistrerArticle(Article existant, EditText nom, EditText qte, EditText prix, CheckBox approx) {
+    private boolean enregistrerArticle(Article existant, EditText nom, EditText qte, Spinner unite, EditText prix, CheckBox approx) {
         String n = nom.getText().toString().trim();
         if (n.isEmpty()) {
             nom.setError("Entrez le nom de l’article");
             return false;
         }
-        int q = 1;
-        try {
-            q = Math.max(1, Integer.parseInt(qte.getText().toString().trim()));
-        } catch (NumberFormatException ignored) {
+        double q = 1;
+        String qs = qte.getText().toString().trim().replace(',', '.').replace(" ", "");
+        if (!qs.isEmpty()) {
+            try {
+                q = Double.parseDouble(qs);
+            } catch (NumberFormatException e) {
+                qte.setError("Quantité invalide");
+                return false;
+            }
+        }
+        if (q <= 0) {
+            qte.setError("Doit être supérieure à 0");
+            return false;
         }
         double p = -1;
         String ps = prix.getText().toString().trim().replace(',', '.').replace(" ", "");
@@ -296,6 +314,7 @@ public class ProjetActivity extends AppCompatActivity implements ArticleAdapter.
         Article a = existant != null ? existant : new Article();
         a.nom = n;
         a.qte = q;
+        a.unite = String.valueOf(unite.getSelectedItem());
         a.prix = p;
         a.approx = p >= 0 && approx.isChecked();
         if (existant == null) projet.articles.add(0, a);

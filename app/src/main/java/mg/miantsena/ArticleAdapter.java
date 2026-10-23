@@ -55,10 +55,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.VH> {
         h.sousTotal.setAlpha(alpha);
 
         if (a.aPrix()) {
-            h.detail.setText(a.qte + " × " + (a.approx ? "≈ " : "") + Utils.argent(a.prix));
+            h.detail.setText(Utils.qteTexte(a) + " × " + (a.approx ? "≈ " : "") + Utils.argent(a.prix));
             h.sousTotal.setText((a.approx ? "≈ " : "") + Utils.argent(a.total()));
         } else {
-            h.detail.setText(a.qte + (a.qte > 1 ? " unités" : " unité") + " • prix non renseigné");
+            h.detail.setText(Utils.qteTexte(a) + " • prix non renseigné");
             h.sousTotal.setText("—");
         }
 

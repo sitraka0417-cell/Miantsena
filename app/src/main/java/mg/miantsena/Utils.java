@@ -17,6 +17,19 @@ public class Utils {
         return s.replace('\u202f', ' ').replace('\u00a0', ' ') + " Ar";
     }
 
+    /** 2 -> "2" ; 0.5 -> "0,5" */
+    public static String qte(double q) {
+        if (Math.abs(q - Math.rint(q)) < 0.0005) return String.valueOf((long) Math.rint(q));
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.###",
+                new java.text.DecimalFormatSymbols(Locale.FRANCE));
+        return df.format(q);
+    }
+
+    /** "0,5 L", "2 kg", "3 pce" */
+    public static String qteTexte(Article a) {
+        return qte(a.qte) + " " + a.unite;
+    }
+
     public static String date(long ms) {
         String s = new SimpleDateFormat("EEEE d MMMM yyyy", Locale.FRANCE).format(new Date(ms));
         return s.substring(0, 1).toUpperCase(Locale.FRANCE) + s.substring(1);
@@ -37,7 +50,7 @@ public class Utils {
         sb.append("🛒 ").append(p.titre()).append("\n📅 ").append(date(p.date)).append("\n\n");
         for (Article a : p.articles) {
             sb.append(a.pris ? "☑ " : "☐ ").append(a.nom);
-            if (a.qte > 1) sb.append(" ×").append(a.qte);
+            sb.append(" (").append(qteTexte(a)).append(")");
             if (a.aPrix()) sb.append(" — ").append(a.approx ? "≈ " : "").append(argent(a.total()));
             sb.append("\n");
         }
