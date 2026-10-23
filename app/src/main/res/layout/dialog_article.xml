@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -35,34 +36,41 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_weight="2"
-            android:hint="Quantité">
+            android:layout_weight="1"
+            android:hint="Quantité"
+            app:helperText="ex. 0,5">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/d_qte"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:hint="Prix unitaire"
-            app:helperText="Facultatif"
-            app:suffixText="Ar">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/d_prix"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/d_unite"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="18dp"
+            android:layout_weight="1" />
     </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Prix par unité (ex. le prix d’1 kg)"
+        app:helperText="Facultatif"
+        app:suffixText="Ar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/d_prix"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/d_approx"
