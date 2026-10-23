@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.Miantsena" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#5B5BD6</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:statusBarColor">#312E81</item>
+        <item name="android:windowBackground">@drawable/bg_app</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
