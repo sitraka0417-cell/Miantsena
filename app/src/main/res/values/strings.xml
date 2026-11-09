@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Miantsena</string>
+    <string name="login_sous_titre">Lisitry ny fividianana</string>
+    <string name="login_google">Hiditra amin\'ny kaonty Google</string>
+    <string name="login_info">Ireo kaonty nahazo alalana ihany no afaka miditra.</string>
+    <string name="login_aide">Raha mbola tsy nahazo « autorisation » hiditra amin\'ny apps ny kaonty mailaka dia miresaha amin\'ny mpilarakara.</string>
+    <string name="login_contact">Tsindrio eto ambany izay fomba tianao hifandraisana aminy:</string>
+    <string name="login_signature">Application noforonin\'i Sitraka Nambinintsoa</string>
+    <string name="login_echec">Tsy nahomby ny fidirana. Andramo indray.</string>
+    <string name="login_refuse">Tsy mbola nahazo alalana hiditra amin\'ity application ity ity kaonty ity.</string>
+    <string name="login_reseau">Tsy afaka nanamarina ny alalana. Jereo ny internet dia andramo indray.</string>
 </resources>

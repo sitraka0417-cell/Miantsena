@@ -12,6 +12,7 @@ public class Projet {
     public String id = UUID.randomUUID().toString();
     public String nom = "";
     public long date = System.currentTimeMillis();
+    public long maj = 0; // dernière modification (synchro cloud)
     public List<Article> articles = new ArrayList<>();
 
     public int nbPris() {
@@ -72,8 +73,21 @@ public class Projet {
         return p;
     }
 
+    public void copierDepuis(Projet autre) {
+        nom = autre.nom;
+        date = autre.date;
+        maj = autre.maj;
+        articles.clear();
+        articles.addAll(autre.articles);
+    }
+
     public JSONObject toJson() throws JSONException {
+        return toJson(true);
+    }
+
+    public JSONObject toJson(boolean avecMaj) throws JSONException {
         JSONObject o = new JSONObject();
+        if (avecMaj) o.put("maj", maj);
         o.put("id", id);
         o.put("nom", nom);
         o.put("date", date);
@@ -88,6 +102,7 @@ public class Projet {
         p.id = o.optString("id", p.id);
         p.nom = o.optString("nom", "");
         p.date = o.optLong("date", System.currentTimeMillis());
+        p.maj = o.optLong("maj", 0);
         JSONArray arr = o.optJSONArray("articles");
         if (arr != null) {
             for (int i = 0; i < arr.length(); i++) {

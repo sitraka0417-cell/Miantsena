@@ -191,6 +191,7 @@ public class ProjetActivity extends AppCompatActivity implements ArticleAdapter.
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_TEXT, Utils.texteProjet(projet));
+                Verrou.sortieVolontaire = true;
                 startActivity(Intent.createChooser(i, "Partager la liste"));
             } else if (id == 5) {
                 new MaterialAlertDialogBuilder(this)
@@ -335,5 +336,34 @@ public class ProjetActivity extends AppCompatActivity implements ArticleAdapter.
             Store.get(this).remove(projet);
         }
         Store.sauver(this);
+    }
+
+    // ----- Synchro cloud : mise à jour venant d'un autre appareil -----
+    private final Sync.Ecouteur syncEcouteur = new Sync.Ecouteur() {
+        @Override
+        public void donneesChangees() {
+            if (projet == null) return;
+            if (Store.parId(ProjetActivity.this, projet.id) == null) {
+                finish();
+                return;
+            }
+            if (!champNom.hasFocus() && !champNom.getText().toString().equals(projet.nom)) {
+                champNom.setText(projet.nom);
+            }
+            adapter.notifyDataSetChanged();
+            appliquerMode();
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Sync.ajouter(syncEcouteur);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Sync.retirer(syncEcouteur);
     }
 }

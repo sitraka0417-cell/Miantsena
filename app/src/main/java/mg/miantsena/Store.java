@@ -30,7 +30,15 @@ public class Store {
         return liste;
     }
 
+    /** Sauvegarde locale + envoi automatique vers le cloud. */
     public static synchronized void sauver(Context c) {
+        Sync.preparer(get(c));
+        sauverLocal(c);
+        Sync.envoyer(c);
+    }
+
+    /** Sauvegarde locale uniquement (sans synchro). */
+    public static synchronized void sauverLocal(Context c) {
         List<Projet> l = get(c);
         JSONArray arr = new JSONArray();
         try {
@@ -39,6 +47,11 @@ public class Store {
             return;
         }
         prefs(c).edit().putString("projets", arr.toString()).apply();
+    }
+
+    public static synchronized void vider(Context c) {
+        liste = new ArrayList<>();
+        prefs(c).edit().remove("projets").apply();
     }
 
     public static Projet parId(Context c, String id) {

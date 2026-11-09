@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "792277288564",
+    "project_id": "miantsena-19be5",
+    "storage_bucket": "miantsena-19be5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792277288564:android:07de5e7621152e5e81b321",
+        "android_client_info": {
+          "package_name": "mg.miantsena"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "792277288564-bjiurd953lnq5o4v0039uuvrn07m1t6o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mg.miantsena",
+            "certificate_hash": "11eb3e8b5efb4ca28d0aa1a28625531aff40f8cd"
+          }
+        },
+        {
+          "client_id": "792277288564-cv7u4l11va1cihiv9te3qqs6skr5rku1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABRuAbnRGyjbYFyPOKpv8JNhXv5kSNfZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "792277288564-cv7u4l11va1cihiv9te3qqs6skr5rku1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
